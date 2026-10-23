@@ -3,73 +3,65 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    // READ: Menampilkan semua data buku ke dalam View (Tabel HTML)
     public function index()
     {
-        $books = Book::all();
+        $books = Book::with('category')->get(); 
         return view('books.index', compact('books'));
     }
 
-    // CREATE: Menampilkan form tambah buku
     public function create()
     {
-        return view('books.create');
+        $categories = Category::all(); 
+        return view('books.create', compact('categories'));
     }
 
-    // STORE: Menyimpan data baru yang dikirim dari form ke database
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'author' => 'required',
-            'year' => 'required|numeric',
-            'stock' => 'required|numeric',
+        $validate = $request->validate([
+            'title'       => 'required|string|max:255',
+            'author'      => 'required|string|max:255',
+            'year'        => 'required|integer|min:1900',
+            'stock'       => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id', 
         ]);
 
-        Book::create([
-            'title' => $request->title,
-            'author' => $request->author,
-            'year' => $request->year,
-            'stock' => $request->stock,
-        ]);
+        Book::create($validate);
 
-        return redirect()->route('books.index');
+        return redirect()->route('books.index')
+                         ->with('success', 'Buku berhasil ditambahkan!');
     }
 
-    // EDIT: Menampilkan form edit berdasarkan data buku yang dipilih
     public function edit(Book $book)
     {
-        return view('books.edit', compact('book'));
+        $categories = Category::all();
+        return view('books.edit', compact('book', 'categories'));
     }
 
-    // UPDATE: Menyimpan perubahan data ke database
     public function update(Request $request, Book $book)
     {
-        $request->validate([
-            'title' => 'required',
-            'author' => 'required',
-            'year' => 'required|numeric',
-            'stock' => 'required|numeric',
+        $validate = $request->validate([
+            'title'       => 'required|string|max:255',
+            'author'      => 'required|string|max:255',
+            'year'        => 'required|integer|min:1900',
+            'stock'       => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
-        $book->update([
-            'title' => $request->title,
-            'author' => $request->author,
-            'year' => $request->year,
-            'stock' => $request->stock,
-        ]);
+        $book->update($validate);
 
-        return redirect()->route('books.index');
+        return redirect()->route('books.index')
+                         ->with('success', 'Buku berhasil diperbarui!');
     }
 
-    // DELETE: Menghapus data buku dari database
     public function destroy(Book $book)
     {
         $book->delete();
-        return redirect()->route('books.index');
+        return redirect()->route('books.index')
+                         ->with('success', 'Buku berhasil dihapus!');
     }
 }
