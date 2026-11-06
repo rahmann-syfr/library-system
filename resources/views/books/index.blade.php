@@ -29,6 +29,11 @@
     <a href="{{ route('books.create') }}" class="btn-add">+ Tambah Buku Baru</a>
     <a href="{{ route('categories.index') }}" class="btn-category">Kelola Kategori</a>
     
+    <!-- Tombol Kelola Pengguna hanya muncul untuk role Admin -->
+    @can('manage-users')
+        <a href="{{ route('users.index') }}" class="btn-category" style="background:#6c757d;">Kelola Pengguna</a>
+    @endcan
+    
     <!-- Form Logout dari Materi 12 -->
     <form action="{{ route('logout') }}" method="POST" style="display:inline;">
         @csrf

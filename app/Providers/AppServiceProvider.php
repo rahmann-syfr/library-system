@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Gate; // Tambahkan baris ini
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Mendefinisikan Gate manage-users (hanya untuk admin)
+        Gate::define('manage-users', function ($user) {
+            return $user->role === 'admin';
+        });
     }
 }
