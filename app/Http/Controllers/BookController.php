@@ -13,7 +13,7 @@ class BookController extends Controller
         $books = Book::with('category')->get(); 
         return view('books.index', compact('books'));
     }
- 
+
     public function create()
     {
         $categories = Category::all(); 
@@ -22,11 +22,12 @@ class BookController extends Controller
 
     public function store(Request $request)
     {
+        // Penambahan rule validasi baru sesuai syarat Tugas Pertemuan 10
         $validate = $request->validate([
-            'title'       => 'required|string|max:255',
-            'author'      => 'required|string|max:255',
-            'year'        => 'required|integer|min:1900',
-            'stock'       => 'required|integer|min:0',
+            'title'       => 'required|string|min:3|max:255',
+            'author'      => 'required|string|min:3|max:255',
+            'year'        => 'required|integer|digits:4|min:1900|max:' . date('Y'),
+            'stock'       => 'required|integer|min:0|max:1000',
             'category_id' => 'required|exists:categories,id', 
         ]);
 
@@ -44,11 +45,12 @@ class BookController extends Controller
 
     public function update(Request $request, Book $book)
     {
+        // Penambahan rule validasi baru sesuai syarat Tugas Pertemuan 10
         $validate = $request->validate([
-            'title'       => 'required|string|max:255',
-            'author'      => 'required|string|max:255',
-            'year'        => 'required|integer|min:1900',
-            'stock'       => 'required|integer|min:0',
+            'title'       => 'required|string|min:3|max:255',
+            'author'      => 'required|string|min:3|max:255',
+            'year'        => 'required|integer|digits:4|min:1900|max:' . date('Y'),
+            'stock'       => 'required|integer|min:0|max:1000',
             'category_id' => 'required|exists:categories,id',
         ]);
 
