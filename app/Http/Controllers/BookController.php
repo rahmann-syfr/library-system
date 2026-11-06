@@ -13,7 +13,7 @@ class BookController extends Controller
         $books = Book::with('category')->get(); 
         return view('books.index', compact('books'));
     }
-
+ 
     public function create()
     {
         $categories = Category::all(); 
