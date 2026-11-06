@@ -16,16 +16,16 @@ Route::post('/logout', [AuthController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
 
-// Halaman utama (landing page) ditaruh di luar agar bisa diakses tanpa login
+// Arahkan otomatis ke halaman buku (akan dicegat ke halaman login jika belum autentikasi)
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('books.index');
 });
 
 // Semua rute di dalam grup ini wajib login
 Route::middleware('auth')->group(function () {
     
     Route::get('/dashboard', function () {
-        return view('welcome');
+        return redirect()->route('books.index'); // Gua arahin juga ke books biar nggak balik ke welcome
     });
 
     Route::resource('books', BookController::class);

@@ -12,6 +12,7 @@
         .btn-edit { text-decoration: none; padding: 4px 8px; background: #ffc107; color: black; border-radius: 3px; display: inline-block; }
         .btn-delete { padding: 4px 8px; background: #dc3545; color: white; border: none; border-radius: 3px; cursor: pointer; }
         .btn-category { text-decoration: none; padding: 5px 10px; background: #17a2b8; color: white; border-radius: 4px; display: inline-block; margin-left: 10px; }
+        .btn-logout { padding: 5px 10px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; margin-left: 10px; font-size: 16px; }
         .alert-success { padding: 10px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 4px; margin-bottom: 15px; }
     </style>
 </head>
@@ -27,6 +28,12 @@
     
     <a href="{{ route('books.create') }}" class="btn-add">+ Tambah Buku Baru</a>
     <a href="{{ route('categories.index') }}" class="btn-category">Kelola Kategori</a>
+    
+    <!-- Form Logout dari Materi 12 -->
+    <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+        @csrf
+        <button type="submit" class="btn-logout">Logout</button>
+    </form>
 
     <table>
         <thead>
